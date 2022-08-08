@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { client, urlFor } from '../../lib/client';
-import { AiOutlineMinus, AiOutlinePlus, AiFillStar, AiOutlineStar} from 'react-icons/ai';
+import React, {useState} from 'react';
+import {client, urlFor} from '../../lib/client';
+import {AiOutlineMinus, AiOutlinePlus, AiFillStar, AiOutlineStar} from 'react-icons/ai';
 import {Product} from "../../components";
 import {useStateContext} from "../../context/StateContext";
 
-const ProductDetails = ({ product, products }) => {
-    const { image, name, details, price } = product;
+const ProductDetails = ({product, products}) => {
+    const {image, name, details, price} = product;
     const [index, setIndex] = useState(0)
 
-    const { increaseQuantity, decreaseQuantity, quantity, onAdd } = useStateContext()
+    const {increaseQuantity, decreaseQuantity, quantity, onAdd} = useStateContext()
 
 
     return (
@@ -19,8 +19,10 @@ const ProductDetails = ({ product, products }) => {
                         <img src={urlFor(image && image[index])} className='product-detail-image' alt=""/>
                     </div>
                     <div className='small-images-container'>
-                        {image?.map((item, i)=> (
-                            <img src={urlFor(item)} className={i === index ? 'small-image selected-image' : 'small-image'} onMouseEnter={()=>setIndex(i)}/>
+                        {image?.map((item, i) => (
+                            <img src={urlFor(item)}
+                                 className={i === index ? 'small-image selected-image' : 'small-image'}
+                                 onMouseEnter={() => setIndex(i)}/>
                         ))}
                     </div>
                 </div>
@@ -28,17 +30,17 @@ const ProductDetails = ({ product, products }) => {
                     <h1>{name}</h1>
                     <div className='reviews'>
                         <div>
-                            <AiFillStar />
-                            <AiFillStar />
-                            <AiFillStar />
-                            <AiFillStar />
-                            <AiOutlineStar />
+                            <AiFillStar/>
+                            <AiFillStar/>
+                            <AiFillStar/>
+                            <AiFillStar/>
+                            <AiOutlineStar/>
                         </div>
                         <p>(20)</p>
                     </div>
-                        <h4>Details: </h4>
-                        <p>{details}</p>
-                        <p className='price'>${price}</p>
+                    <h4>Details: </h4>
+                    <p>{details}</p>
+                    <p className='price'>${price}</p>
                     <div className='quantity'>
                         <h3>Quantity:</h3>
                         <p className='quantity-desc'>
@@ -48,7 +50,9 @@ const ProductDetails = ({ product, products }) => {
                         </p>
                     </div>
                     <div className='buttons'>
-                        <button type="button" className='add-to-cart' onClick={()=> onAdd(product, quantity)}>Add to Cart</button>
+                        <button type="button" className='add-to-cart' onClick={() => onAdd(product, quantity)}>Add to
+                            Cart
+                        </button>
                         <button type="button" className='buy-now' onClick=''>Buy Now</button>
                     </div>
                 </div>
@@ -57,7 +61,7 @@ const ProductDetails = ({ product, products }) => {
                 <h2>You may also like</h2>
                 <div className='marquee'>
                     <div className='maylike-products-container track'>
-                    {products.map(item=> <Product key={item._id} product={item}/>)}
+                        {products.map(item => <Product key={item._id} product={item}/>)}
                     </div>
                 </div>
             </div>
@@ -75,7 +79,7 @@ export const getStaticPaths = async () => {
 
     const products = await client.fetch(query);
 
-    const paths = products.map( product => ({
+    const paths = products.map(product => ({
         params: {
             slug: product.slug.current
         }
@@ -87,7 +91,7 @@ export const getStaticPaths = async () => {
     }
 }
 
-export const getStaticProps = async ({params: { slug }}) => {
+export const getStaticProps = async ({params: {slug}}) => {
     const query = `*[_type == "product" && slug.current == '${slug}'][0]`;
     const productsQuery = '*[_type == "product"]';
     const product = await client.fetch(query);
@@ -95,7 +99,7 @@ export const getStaticProps = async ({params: { slug }}) => {
 
     const bannerQuery = '*[_type == "banner"]';
     return {
-        props: { product, products },
+        props: {product, products},
     };
 };
 
